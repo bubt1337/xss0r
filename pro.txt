@@ -1,0 +1,99 @@
+-------------------------------------------------------------------------------------------------------------------------
+Plan:proplan                                                                                                                     Allowed Scopes:get,post,path,reflection,onlyalerts,multipart,suffix,prefix,json,oneresult,resume,initialize,cookies,save
+Max threads:10                                                                        
+Max payloads:2000  
+-------------------------------------------------------------------------------------------------------------------------
+
+GET Request Scanning:
+./xss0r --get --urls urls.txt --payloads payloads.txt --threads 10
+
+https://example.com/search?q=
+https://example.com/product?id=
+https://example.com/profile?user=
+
+-------------------------------------------------------------------------------------------------------------------------
+
+POST Request Scanning:
+./xss0r --post --request request.txt --payloads payloads.txt --threads 10
+
+POST /login HTTP/1.1
+Host: example.com
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 34
+
+username=test&password=test123
+
+-------------------------------------------------------------------------------------------------------------------------
+Path Injection Scanning:
+
+./xss0r --get --urls urls.txt --payloads payloads.txt --path --threads 10
+https://example.com/search
+https://example.com/product
+https://example.com/profile
+
+-------------------------------------------------------------------------------------------------------------------------
+Reflection Scanning:
+./xss0r --get --urls urls.txt --payloads payloads.txt --reflection --threads 10
+
+https://example.com/search?q=test
+https://example.com/product?id=123
+https://example.com/profile?user=admin
+
+-------------------------------------------------------------------------------------------------------------------------
+Only Alerts Mode:
+./xss0r --get --urls urls.txt --payloads payloads.txt --onlyalerts --threads 10
+
+-------------------------------------------------------------------------------------------------------------------------
+Multipart Form Data Scanning:
+./xss0r --post --request request.txt --payloads payloads.txt --multipart --threads 10
+
+POST /upload HTTP/1.1
+Host: example.com
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary
+
+------WebKitFormBoundary
+Content-Disposition: form-data; name="file"; filename="test.txt"
+Content-Type: text/plain
+
+XSS Payload Here
+------WebKitFormBoundary--
+
+-------------------------------------------------------------------------------------------------------------------------
+Suffix Injection:
+./xss0r --get --urls urls.txt --payloads payloads.txt --suffix "-test" --threads 10
+
+-------------------------------------------------------------------------------------------------------------------------
+Prefix Injection:
+./xss0r --get --urls urls.txt --payloads payloads.txt --prefix "test-" --threads 10
+
+-------------------------------------------------------------------------------------------------------------------------
+JSON-based Scanning:
+./xss0r --post --request request.json --payloads payloads.txt --json --threads 10
+
+POST /api/user/update HTTP/1.1
+Host: example.com
+Content-Type: application/json
+Content-Length: 58
+
+{
+    "username": "lostsec",
+    "email": "example@test.com"
+}
+
+-------------------------------------------------------------------------------------------------------------------------
+One Result Only Mode:
+./xss0r --get --urls urls.txt --payloads payloads.txt --oneresult --threads 10
+
+-------------------------------------------------------------------------------------------------------------------------
+Resume Scanning from Saved State:
+./xss0r --resume --threads 10
+
+-------------------------------------------------------------------------------------------------------------------------
+Initialize Session with Cookies:
+./xss0r --initialize --cookies cookies.txt
+
+-------------------------------------------------------------------------------------------------------------------------
+Save Scanning Session:
+./xss0r --get --urls urls.txt --payloads payloads.txt --save --threads 10
+
+-------------------------------------------------------------------------------------------------------------------------
